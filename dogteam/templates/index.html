@@ -51,7 +51,6 @@
 
 <div class="recommender">
 	<div class="overlay-close">
-		
 	</div>
 
 	<div id="question-1" class="rec-content">
@@ -61,6 +60,8 @@
 			<li class="choice">I have an apartment with with plenty of walk times allotted.</li>
 			<li class="choice">I have a house with yard access.</li>
 		</ul>
+		<div class="next-btn">Next <i class="fa fa-angle-right"></i></div>
+
 	</div>
 	<div id="question-2" class="rec-content">
 		<h2>What is your activity level, with a pet in mind?</h2>
@@ -69,6 +70,7 @@
 			<li class="choice">A total weekend warrior and want a pet that can handle both.</li>
 			<li class="choice">I exercise often and want a pet that can keep up.</li>
 		</ul>
+		<div class="next-btn">Next <i class="fa fa-angle-right"></i></div>
 	</div>
 
 	<div id="question-3" class="rec-content">
@@ -78,6 +80,7 @@
 			<li class="choice">I’ve had a few dogs but this is my first adoption.</li>
 			<li class="choice">I’ve trained many dogs in my time.</li>
 		</ul>
+		<div class="next-btn">Next <i class="fa fa-angle-right"></i></div>
 	</div>
 
 	<div id="question-4" class="rec-content">
@@ -87,23 +90,26 @@
 			<li class="choice">Groomers every now and then are fine.</li>
 			<li class="choice">I don’t mind the shedding and grooming! </li>
 		</ul>
+		<div class="next-btn">Next <i class="fa fa-angle-right"></i></div>
 	</div>
 
-	<div id="question-5" class="rec-content">
+	<div id="question-5" class="rec-content multi">
 		<h2>Select all ages you would like to see</h2>
 		<ul>
 			<li class="choice">Young</li>
 			<li class="choice">Adult</li>
 			<li class="choice">Senior</li>
 		</ul>
+		<div class="next-btn">Next <i class="fa fa-angle-right"></i></div>
 	</div>
-
 
 	<div id="question-6" class="rec-content">
 		<h2>What is your zip code?</h2>
 		<ul>
-			<li class="choice"><input type="text"/></li>
+			<li class="choice"><input style="color:black" type="text"/></li>
 		</ul>
+		<div class="next-btn">Next <i class="fa fa-angle-right"></i></div>
+
 	</div>
 	<div id="question-7" class="rec-content">
 		<h2>Are you looking for a male or female?</h2>
@@ -112,15 +118,20 @@
 			<li class="choice">Female</li>
 			<li class="choice">No Preference</li>
 		</ul>
+		<div class="next-btn">Next <i class="fa fa-angle-right"></i></div>
+
 	</div>
-	<div id="question-8" class="rec-content">
+	<div id="question-8" class="rec-content multi">
 		<h2>Are any of these already in your family?</h2>
 		<ul>
 			<li class="choice">Baby icon</li>
 			<li class="choice">Cat icon</li>
 			<li class="choice">Dog icon</li>
 		</ul>
+		<div class="finish-btn">Finish!</i></div>
 	</div>
+
+
 </div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -129,17 +140,15 @@
 <script>
 
 var $container;
+	var payload = {};
 
 $( function() {
+  $('.recommender').hide();
 
-	// var $container = $('#container');
- //  $container.imagesLoaded( function() {
- //    $container.masonry({
- //      columnWidth: function( containerWidth ) {
- //        return containerWidth / 3
- //      }
- //    });
- //  });
+	$('.rec-content:first').show();
+	$('.next-btn').hide();
+
+	$('.rec-content.multi .choice').addClass('faded');
 
 	$('#container').on('click', '.item', function(){
 		if($(this).hasClass('selected')) {
@@ -197,13 +206,82 @@ $( function() {
   });
 
 
-
   $('.walkthrough-btn').on('click', function(){
   	$('.recommender').show();
   });
 
+  $('.walkthrough-btn').hover(function(){
+  	$(this).find('img').attr('src', '/static/dogteam/sparkles.png');
+  	$(this).css('background', 'black')
+  },
+  	function(){
+  		$(this).find('img').attr('src', '/static/dogteam/sparklesblack.png');
+  		$(this).css('background', 'white')
+
+  	})
+
   $('.recommender .overlay-close').on('click', function(){
   	$('.recommender').hide();
+  });
+
+  //choice clicked on non-multi
+  $('.rec-content:not(".multi") .choice').on('click', function(){
+  	$('.next-btn').fadeIn();
+  	 $(this).removeClass('faded');
+  	 $(this).siblings().addClass('faded');
+  
+  });
+
+  //choice clicked on multi
+  $('.rec-content.multi .choice').on('click', function(){
+  	$('.next-btn').fadeIn();
+  	$(this).toggleClass('faded');
+
+  });
+
+
+  //next clicked 
+  $('.next-btn, .finish-btn').on('click', function(){
+
+  	var $currentQuestion = $(this).parent('.rec-content');
+  	var currentQuestionId = $currentQuestion.attr('id');
+
+  	if($currentQuestion.hasClass('multi')){
+  		var arr = [];
+  		$currentQuestion.find('.choice:not(".faded")').each(function(i, item){
+  			console.log(item)
+  			arr.push($(item).text());
+  		})
+  		payload[currentQuestionId] = arr;
+
+  	}
+  	else {
+  		payload[currentQuestionId]= $currentQuestion.find('.choice:not(".faded")').text();
+  	}
+
+  	if($(this).hasClass('finish-btn')) {
+  		 $.ajax({
+  		 	url: 'http://hidden-dawn-1745.herokuapp.com/recommendations/filter.json',
+  		 	data: payload
+  		 }).done(function(result){
+  		 	$('.container').empty();
+  		 	dogsData = result.data;
+  		  $.each(dogsData, function(i, dog) {
+  		  	if(dog.photos[0]) {
+  		  		var a = $('<div class="item element"><a class="shadow"><img src="' + dog.photos[0].medium + '" /></a></div>').attr('data-dog-id', dog.id).prependTo('#container');
+  		  	}
+  		  })
+  		});  	
+  	}
+
+  	else {
+  		//it's a next button
+	  	$currentQuestion.fadeOut(function(){
+	  		$currentQuestion.next().fadeIn();
+	  	});
+  	}
+
+
   });
 
 

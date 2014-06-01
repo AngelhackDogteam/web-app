@@ -5,10 +5,26 @@
 
 ul, ol {
   margin: 0;
-  padding: 0; }
+  padding: 0;
+  list-style-type: none; }
 
 h1 {
   margin: 0; }
+
+.faded {
+  transition: all .5s ease;
+  opacity: .25; }
+
+.next-btn {
+  cursor: pointer;
+  font-weight: 700;
+  border: 4px solid white;
+  text-transform: uppercase;
+  padding: 15px;
+  display: inline-block; }
+  .next-btn:hover {
+    background: white;
+    color: #333; }
 
 body {
   margin: 0;
@@ -68,10 +84,6 @@ body {
     width: 90px;
     border: 3px solid #555555;
     height: 90px; }
-    .top-bar .walkthrough-btn:hover {
-      background: #d1d1d1; }
-    .top-bar .walkthrough-btn:active {
-      background: white; }
     .top-bar .walkthrough-btn img {
       width: 60px; }
 
@@ -198,12 +210,24 @@ body {
     cursor: pointer; }
     .recommender .overlay-close:hover {
       opacity: .45; }
+  .recommender .rec-wrapper {
+    width: 100%;
+    height: 100%; }
   .recommender .rec-content {
+    display: none;
+    width: 100%;
     position: relative;
     top: 50%;
     height: 60%;
     -webkit-transform: translateY(-50%);
     transform: translateY(-50%); }
+    .recommender .rec-content h2 {
+      text-transform: uppercase;
+      font-size: 32px; }
+    .recommender .rec-content#question-1 {
+      left: 0; }
+  .recommender ul {
+    margin-bottom: 5px; }
   .recommender li {
     width: 100%;
     padding: 3% 0;
