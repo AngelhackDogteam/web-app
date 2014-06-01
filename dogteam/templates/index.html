@@ -124,9 +124,9 @@
 	<div id="question-8" class="rec-content multi">
 		<h2>Are any of these already in your family?</h2>
 		<ul>
-			<li class="choice">Baby icon</li>
-			<li class="choice">Cat icon</li>
-			<li class="choice">Dog icon</li>
+			<li class="choice">Baby</li>
+			<li class="choice">Cat</li>
+			<li class="choice">Dog</li>
 		</ul>
 		<div class="finish-btn">Finish!</i></div>
 	</div>
@@ -170,6 +170,7 @@ $( function() {
 		 $.ajax('http://hidden-dawn-1745.herokuapp.com/dogs.json?pet_id=' + dogId).done(function(dog){
 		 	populateDetails(dog);
 		 	$.ajax('http://hidden-dawn-1745.herokuapp.com/shelters.json?shelter_id=' + dog.shelter_id).done(function(shelter){
+		 		console.log(shelter);
 		 		$("#details-pane .shelter-name").html(shelter.name)
 		 	});
 		 });
