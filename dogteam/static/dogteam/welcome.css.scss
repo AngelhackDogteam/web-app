@@ -198,9 +198,15 @@ body {
 	.description {
 		height: 395px;
 		overflow: hidden;
+		margin-bottom: 0;
 
 	}
-	
+	.show-more-description {
+		color: #1aafe2;
+		display: block;
+		margin-bottom:10px;
+	}
+
 	.badge {
 		width: 60px;
 		height: 60px;

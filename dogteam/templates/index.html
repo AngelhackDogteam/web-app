@@ -38,7 +38,7 @@
 	</div>
 	<div class="details-content">
 	<p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam, ullam ea harum facilis tempore rem assumenda eum architecto nam. Debitis, porro est magni accusantium alias explicabo ipsa doloribus aspernatur doloremque!</p>
-
+	<a class="show-more-description">Show More</a>
   <b>Currently at:</b> <space id='shelter-name'></space> <br>
   <b>City:</b> <space id='shelter-city'></space> <br>
   <b>State:</b> <space id='shelter-state'></space> <br>
@@ -177,10 +177,7 @@ $( function() {
 		 $.ajax('http://hidden-dawn-1745.herokuapp.com/dogs.json?pet_id=' + dogId).done(function(dog){
 		 	populateDetails(dog);
 		 	$.ajax('http://hidden-dawn-1745.herokuapp.com/shelters.json?shelter_id=' + dog.shelter_id).done(function(shelter){
-<<<<<<< HEAD
-		 		console.log(shelter);
-		 		$("#details-pane .shelter-name").html(shelter.name)
-=======
+
 		 		$("#details-pane #shelter-name").html(shelter.name)
         $("#details-pane #shelter-email").html(shelter.email)
         $("#details-pane #shelter-number").html(shelter.phone)
@@ -188,7 +185,6 @@ $( function() {
         $("#details-pane #shelter-state").html(shelter.state)
 
         $('.adopt-btn').attr('href', 'mailto:'+shelter.email+"?subject=Regarding " + dog.name);
->>>>>>> FETCH_HEAD
 		 	});
 		 });
 
@@ -208,6 +204,12 @@ $( function() {
   	$('.walkthrough-btn').removeClass('details-visible');
   	$('#details-pane').removeClass('show');
   }
+
+  $('.show-more-description').on('click', function(){
+  	$('.description').css({height:"initial"});
+  	$(this).hide();
+  });
+
   
 
   $('.fa-times, .top-bar').on('click', function(e){

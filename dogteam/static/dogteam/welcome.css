@@ -128,7 +128,12 @@ body {
     clear: both; }
   #details-pane .description {
     height: 395px;
-    overflow: hidden; }
+    overflow: hidden;
+    margin-bottom: 0; }
+  #details-pane .show-more-description {
+    color: #1aafe2;
+    display: block;
+    margin-bottom: 10px; }
   #details-pane .badge {
     width: 60px;
     height: 60px;
