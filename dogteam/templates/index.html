@@ -261,7 +261,6 @@ $( function() {
   	if($currentQuestion.hasClass('multi')){
   		var arr = [];
   		$currentQuestion.find('.choice:not(".faded")').each(function(i, item){
-  			console.log(item)
   			arr.push($(item).text());
   		})
   		payload[currentQuestionId] = arr;
@@ -288,8 +287,8 @@ $( function() {
 
   	else {
   		//it's a next button
-	  	$currentQuestion.fadeOut(function(){
-	  		$currentQuestion.next().fadeIn();
+	  	$currentQuestion.fadeOut(200,function(){
+	  		$currentQuestion.next().fadeIn(200);
 	  	});
   	}
 
