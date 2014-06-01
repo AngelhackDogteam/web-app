@@ -1,0 +1,187 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dogfinder</title>
+  <link href="{% static "dogteam/normalize.css" %}" rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="{% static "dogteam/welcome.css" %}" />
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'>
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+</head>
+<body>
+<div id="main">
+	<div class="top-bar">
+		<h1 class="title">Labracadabra!</h1>
+
+		<div class="logo">
+			<a class="walkthrough-btn"><img src="http://i62.tinypic.com/jzjew.png" alt="Logo"></a>
+		</div>
+		<nav>
+<!-- 			<a class="walkthrough-btn"><i class="fa fa-paw"></i> Pun Button</a>
+ -->		</nav>
+	</div>
+	<div id="container">
+	</div>
+</div>
+<div id="details-pane">
+
+	<i class="fa fa-times"></i>
+
+	<div class="details-header">
+		<img class="portrait" src="http://placekitten.com/300/300" alt="Barkzilla">
+		<h1>BARKZILLA</h1>
+	</div>
+	<div class="details-content">
+	<p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam, ullam ea harum facilis tempore rem assumenda eum architecto nam. Debitis, porro est magni accusantium alias explicabo ipsa doloribus aspernatur doloremque!</p>
+	<div class="badge"></div>
+	<div class="badge"></div>
+	<div class="badge"></div>
+	<div class="badge"></div>
+	<a class="adopt-btn" href="#">Adopt Me</a>
+	<a class="adopt-btn" href="#">Adopt Me</a>
+	<a class="adopt-btn" href="#">Adopt Me</a>
+	</div>
+</div>
+
+<div class="recommender">
+	<div class="overlay-close">
+		
+	</div>
+	<div class="rec-content">
+		<h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis, explicabo, eveniet! Sequi?</h2>
+		<ul>
+			<li class="choice">Answer A blah blah blah</li>
+			<li class="choice">Answer B blah blah blah</li>
+			<li class="choice">Answer C blah blah blah</li>
+		</ul>
+	</div>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://rawgithub.com/desandro/masonry/v2.1.08/jquery.masonry.js"></script>
+<script src="http://imagesloaded.desandro.com/imagesloaded.pkgd.js"></script><script src="http://isotope.metafizzy.co/isotope.pkgd.min.js"></script>
+<script>
+
+var $container;
+
+$( function() {
+
+	// var $container = $('#container');
+ //  $container.imagesLoaded( function() {
+ //    $container.masonry({
+ //      columnWidth: function( containerWidth ) {
+ //        return containerWidth / 3
+ //      }
+ //    });
+ //  });
+
+	$('#container').on('click', '.item', function(){
+		if($(this).hasClass('selected')) {
+			closeDetails();
+			return;
+		}
+
+		//show details pane
+		$('#container .item').removeClass('selected');
+		$(this).addClass('selected');
+		$('#details-pane').addClass('show');
+		$('#main').addClass('details-visible');
+		$('.walkthrough-btn').addClass('details-visible');
+
+		 //populate the details pane with specific dog details
+		 //get specific dog 
+		 // $('#details-pane h1').html(dogData.)
+		 var dogId = $(this).attr('data-dog-id');
+		 $.ajax('http://hidden-dawn-1745.herokuapp.com/dogs.json?pet_id=' + dogId).done(function(dog){
+		 	populateDetails(dog);
+		 	$.ajax('http://hidden-dawn-1745.herokuapp.com/shelters.json?shelter_id=' + dog.shelter_id).done(function(shelter){
+		 		$("#details-pane .shelter-name").html(shelter.name)
+		 	});
+		 });
+
+	})
+
+	// else { //hide details pane
+	// 	 	$('#details-pane').removeClass('show');
+	// 	 	$('#container .item').removeClass('selected');
+	// 	 	$('#main').removeClass('details-visible');
+	// 	 	$('.walkthrough-btn').removeClass('details-visible');
+
+	// 	 }
+  
+  var populateDetails = function(dog){
+  	var $detailsPane = $('#details-pane');
+  	$detailsPane.find('h1').html(dog.name)
+  	$detailsPane.find('.portrait').attr('src', dog.photos[0].small)
+  	$detailsPane.find('.description').html(dog.description)
+  }
+
+  var closeDetails = function(){
+
+  	$('#main').removeClass('details-visible');
+  	$('#container .item').removeClass('selected');
+  	$('.walkthrough-btn').removeClass('details-visible');
+  	$('#details-pane').removeClass('show');
+  }
+  
+
+  $('.fa-times, .top-bar').on('click', function(e){
+  	e.stopPropagation();
+  	closeDetails();
+  });
+
+
+
+  $('.walkthrough-btn').on('click', function(){
+  	$('.recommender').show();
+  });
+
+  $('.recommender .overlay-close').on('click', function(){
+  	$('.recommender').hide();
+  });
+
+
+
+  $container = $('#container');
+
+   $container.isotope({
+       itemSelector : '.item',
+       //disable resizing
+       resizable: false,
+   });
+   //update columnWidth on window resize
+   $(window).smartresize(function(){
+       $container.isotope({
+       });
+   });
+
+   // for(var i=0; i < 30; i++) {
+   // 	$('<div class="item element"><img src="http://placekitten.com/275/' + (Math.floor(Math.random() * (400 - 200) + 200)) + '" /></div>').prependTo('#container');
+   // }
+   var dogsData;
+
+   $.ajax('http://hidden-dawn-1745.herokuapp.com/breeds/load.json?ip={{ ip }}').done(function(result){
+   	dogsData = result.data;
+    $.each(dogsData, function(i, dog) {
+    	if(dog.photos[0]) {
+    		var a = $('<div class="item element"><a class="shadow"><img src="' + dog.photos[0].medium + '" /></a></div>').attr('data-dog-id', dog.id).prependTo('#container');
+    	}
+    })
+  });
+
+
+
+
+});
+</script>
+
+<script>
+
+
+</script>
+</body>
+</html>
+
+

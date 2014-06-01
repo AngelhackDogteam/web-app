@@ -1,0 +1,378 @@
+// Place all the styles related to the welcome controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+* {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+ul, ol {
+	margin:0;
+	padding:0;
+}
+
+h1 {
+	margin:0;
+}
+
+body {
+	margin: 0;
+	padding:0;
+	font-family: 'Open Sans', sans-serif;
+}
+
+#main {
+	transition: margin .25s ease ;
+	&.details-visible {
+		margin-right:395px;
+	}
+}
+.top-bar {
+	position: fixed;
+	height: 60px;
+	top: 0;
+	width: 100%;
+	z-index: 1;
+	color: #333;
+	background: white;
+	padding: 12px 12px 0;
+
+	h1.title {
+		// font-size: 28px;
+		// color: rgb(73, 73, 73);
+		// font-weight: 600;
+		// text-align: center;
+		// padding-top: 4px;
+		// margin-left: 3px;
+		text-align: center;
+		font-size: 23px;
+		padding-top: 4px;
+		font-weight: 100;
+		margin-left: 3px;
+		margin-bottom: 8px;
+	}
+	.logo {
+		width: 131px;
+		text-align: center;
+		margin: 0 auto;
+		overflow: auto;
+		background: white;
+		height: 76px;
+		border-radius: 0 0 135px 135px;
+		
+
+		h1 {
+			font-size: 23px;
+			padding-top: 4px;
+			font-weight: 100;
+			margin-left: 3px;
+			margin-bottom: 8px;
+			
+		}
+		img {
+			width: 62px;
+			cursor: pointer;
+			position: relative;
+			top: 0px;
+			left: -3px;
+		}
+	}
+
+	nav {
+		overflow: auto;
+	}
+
+	// .walkthrough-btn {
+	// 	float: right;
+	// 	padding: 8px 18px;
+	// 	text-decoration: none;
+	// 	border: 2px solid #333;
+	// 	color: #333;
+	// 	font-size: 12px;
+	// 	font-weight: 700;
+	// 	text-transform: uppercase;
+	// 	transition: margin .25s ease;
+	// 	&:hover {
+	// 		background:#333;
+	// 		color:white;
+	// 	}
+	// 	&.details-visible {
+	// 		margin-right:395px;
+	// 	}
+	// }
+	
+}
+
+#container {
+  // margin-left: 240px;
+  background: white;
+  margin-top:60px;
+  height: auto !important;
+}
+
+#details-pane {
+	padding: 60px 30px 30px;
+	box-shadow: 0px 0px 3px 0px #666;
+	background: white;
+	width: 395px;
+	height: 100%;
+	position: fixed;
+	right: -400px;
+	transition: right .25s ease;
+	padding-top: 60px;
+	top: 0;
+	z-index: 1;
+	overflow: auto;
+
+
+	.fa-times {
+		cursor: pointer;
+		top: 5px;
+		right: 10px;
+		font-size: 1.7em;
+		opacity: .3;
+		position: absolute;
+		&:hover {
+			opacity: .1;
+		}
+	}
+
+	.portrait {
+		width: 20%;
+		float: left;
+		margin-right: 15px;
+	}
+
+	h1 {
+		line-height: .8em;
+	}
+
+	p {
+		line-height: 1.8em;
+	}
+
+	.details-header {
+		overflow:auto;
+	}
+
+	.details-content {
+		clear: both;
+	}
+	
+	.badge {
+		width: 60px;
+		height: 60px;
+		border-radius: 35px;
+		background: rgb(235, 235, 31);
+		float: left;
+		border: 3px solid rgb(212, 213, 9);
+		margin-right: 5px;
+	}
+
+	.adopt-btn {
+		margin-bottom: 10px;
+		clear: both;
+		color: green;
+		text-decoration: none;
+		text-transform: uppercase;
+		font-weight: 700;
+		background: white;
+		padding: 10px 20px;
+		margin-top: 18px;
+		display: block;
+
+		border:4px solid green;
+		&:hover {
+			background: green;
+			color: white;
+		}
+	}
+
+	&.show {
+		right:0;
+	}
+}
+
+
+#container {
+  /* Prevent vertical gaps */
+  line-height: 0;
+
+  -webkit-column-count: 5;
+  -webkit-column-gap:   0px;
+  -moz-column-count:    5;
+  -moz-column-gap:      0px;
+  column-count:         5;
+  column-gap:           0px;
+
+}
+#container img {
+  /* Just in case there are inline attributes */
+  width: 100% !important;
+  height: auto !important;
+}
+
+.item {
+	cursor: pointer;
+	&:hover { 
+		opacity: .8;
+	}
+
+	&.selected {
+		opacity: .3;
+	}
+
+}
+
+ 
+.shadow
+{
+    display:block;
+    position:relative;
+}
+ 
+.shadow img
+{
+    display:block;
+}
+ 
+.shadow::before
+{
+    display:block;
+    content:'';
+    position:absolute;
+    width:100%;
+    height:100%;
+    -moz-box-shadow: inset 0px 0px 8px 4px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow:inset 0px 0px 8px 4px rgba(0, 0, 0, 0.2);
+    box-shadow:inset 0px 0px 8px 4px rgba(0, 0, 0, 0.2);
+}
+
+.recommender {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,.8);
+	color: white;
+	z-index: 5;
+	top:0;
+	text-align: center;
+	.overlay-close {
+		background: url("http://tympanus.net/Development/FullscreenOverlayStyles/img/cross.png")  no-repeat;
+		width: 80px;
+		height: 80px;
+		position: absolute;
+		right: 0px;
+		top: 20px;
+		cursor: pointer;
+		&:hover {
+			opacity: .45;
+		}
+	}
+	.rec-content {
+		position: relative;
+		top: 50%;
+		height: 60%;
+		-webkit-transform: translateY(-50%);
+		transform: translateY(-50%);
+	}
+	li {
+		width: 100%;
+		padding:3% 0;
+		cursor:pointer;
+		font-size: 24px;
+		cursor:pointer;
+		text-shadow:2px 2px 2px #333;
+		&:hover {
+			background:rgba(92, 92, 92, 0.37) ;
+		}
+		h2 {
+
+			font-size: 24px;
+			&:hover {
+				background:none;
+			}
+		}
+	}
+
+}
+
+
+
+// /* items are not quite 1/3 wide */
+// .item {
+// 	cursor:pointer;
+//   width: 10%;
+//   float: left;
+
+//   &.item2 {
+//   	width: 20%;
+//   }
+// }
+
+// /* images cover up the gap */
+// .item img {
+//   display: block;
+//   width: 100%;
+// }
+
+// /**** Transitions for Masonry ****/
+
+// .masonry,
+// .masonry .masonry-brick {
+//   -webkit-transition-duration: 0.2s;
+//      -moz-transition-duration: 0.2s;
+//       -ms-transition-duration: 0.2s;
+//        -o-transition-duration: 0.2s;
+//           transition-duration: 0.2s;
+// }
+
+// .masonry {
+//   -webkit-transition-property: height, width;
+//      -moz-transition-property: height, width;
+//       -ms-transition-property: height, width;
+//        -o-transition-property: height, width;
+//           transition-property: height, width;
+// }
+
+// .masonry .masonry-brick {
+//   -webkit-transition-property: left, right, top;
+//      -moz-transition-property: left, right, top;
+//       -ms-transition-property: left, right, top;
+//        -o-transition-property: left, right, top;
+//           transition-property: left, right, top;
+// }
+
+
+// CSS VERSION
+
+@media (max-width: 1200px) {
+  #container {
+  -moz-column-count:    4;
+  -webkit-column-count: 4;
+  column-count:         4;
+  }
+}
+@media (max-width: 1000px) {
+  #container {
+  -moz-column-count:    3;
+  -webkit-column-count: 3;
+  column-count:         3;
+  }
+}
+@media (max-width: 800px) {
+  #container {
+  -moz-column-count:    2;
+  -webkit-column-count: 2;
+  column-count:         2;
+  }
+}
+@media (max-width: 400px) {
+  #container {
+  -moz-column-count:    1;
+  -webkit-column-count: 1;
+  column-count:         1;
+  }
+}
