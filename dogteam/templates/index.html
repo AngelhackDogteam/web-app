@@ -63,9 +63,9 @@
 	<div id="question-1" class="rec-content">
 		<h2>What type of space do you have?</h2>
 		<ul>
-			<li class="choice">I have a small apartment with no yard access.</li>
-			<li class="choice">I have an apartment with with plenty of walk times allotted.</li>
-			<li class="choice">I have a house with yard access.</li>
+			<li class="choice" data-value='1'>I have a small apartment with no yard access.</li>
+			<li class="choice" data-value='2'>I have an apartment with with plenty of walk times allotted.</li>
+			<li class="choice" data-value='3'>I have a house with yard access.</li>
 		</ul>
 		<div class="next-btn">Next <i class="fa fa-angle-right"></i></div>
 
@@ -73,9 +73,9 @@
 	<div id="question-2" class="rec-content">
 		<h2>What is your activity level, with a pet in mind?</h2>
 		<ul>
-			<li class="choice">I like to take it easy and relax with a snuggle buddy.</li>
-			<li class="choice">A total weekend warrior and want a pet that can handle both.</li>
-			<li class="choice">I exercise often and want a pet that can keep up.</li>
+			<li class="choice" data-value='1'>I like to take it easy and relax with a snuggle buddy.</li>
+			<li class="choice" data-value='2'>A total weekend warrior and want a pet that can handle both.</li>
+			<li class="choice" data-value='3'>I exercise often and want a pet that can keep up.</li>
 		</ul>
 		<div class="next-btn">Next <i class="fa fa-angle-right"></i></div>
 	</div>
@@ -83,9 +83,9 @@
 	<div id="question-3" class="rec-content">
 		<h2>What is your experience level with dogs?</h2>
 		<ul>
-			<li class="choice">This is my first dog!</li>
-			<li class="choice">I’ve had a few dogs but this is my first adoption.</li>
-			<li class="choice">I’ve trained many dogs in my time.</li>
+			<li class="choice" data-value='1'>This is my first dog!</li>
+			<li class="choice" data-value='2'>I’ve had a few dogs but this is my first adoption.</li>
+			<li class="choice" data-value='3'>I’ve trained many dogs in my time.</li>
 		</ul>
 		<div class="next-btn">Next <i class="fa fa-angle-right"></i></div>
 	</div>
@@ -93,9 +93,9 @@
 	<div id="question-4" class="rec-content">
 		<h2>How much maintenance would you be ok with?</h2>
 		<ul>
-			<li class="choice">As little as possible.</li>
-			<li class="choice">Groomers every now and then are fine.</li>
-			<li class="choice">I don’t mind the shedding and grooming! </li>
+			<li class="choice" data-value='1'>As little as possible.</li>
+			<li class="choice" data-value='2'>Groomers every now and then are fine.</li>
+			<li class="choice" data-value='3'>I don’t mind the shedding and grooming! </li>
 		</ul>
 		<div class="next-btn">Next <i class="fa fa-angle-right"></i></div>
 	</div>
@@ -103,14 +103,14 @@
 	<div id="question-5" class="rec-content multi">
 		<h2>Select all ages you would like to see</h2>
 		<ul>
-			<li class="choice">Young</li>
-			<li class="choice">Adult</li>
-			<li class="choice">Senior</li>
+			<li class="choice" data-value='Young'>Young</li>
+			<li class="choice" data-value='Adult'>Adult</li>
+			<li class="choice"  data-value='Senior'>Senior</li>
 		</ul>
 		<div class="next-btn">Next <i class="fa fa-angle-right"></i></div>
 	</div>
 
-	<div id="question-6" class="rec-content">
+	<div id="question-6" class="rec-content zipcode">
 		<h2>What is your zip code?</h2>
 		<ul>
 			<li class="choice"><input style="color:black" type="text"/></li>
@@ -121,9 +121,9 @@
 	<div id="question-7" class="rec-content">
 		<h2>Are you looking for a male or female?</h2>
 		<ul>
-			<li class="choice">Male</li>
-			<li class="choice">Female</li>
-			<li class="choice">No Preference</li>
+			<li class="choice"  data-value='M'>Male</li>
+			<li class="choice" data-value='F'>Female</li>
+			<li class="choice"  data-value=''>No Preference</li>
 		</ul>
 		<div class="next-btn">Next <i class="fa fa-angle-right"></i></div>
 
@@ -261,18 +261,22 @@ $( function() {
   	if($currentQuestion.hasClass('multi')){
   		var arr = [];
   		$currentQuestion.find('.choice:not(".faded")').each(function(i, item){
-  			arr.push($(item).text());
+
+  			arr.push($(item).attr('data-value'));
   		})
   		payload[currentQuestionId] = arr;
 
   	}
-  	else {
-  		payload[currentQuestionId]= $currentQuestion.find('.choice:not(".faded")').text();
-  	}
+  	else if ($currentQuestion.hasClass('zipcode')){
+      console.log($currentQuestion.find('input').text() );
+  		payload[currentQuestionId]= $currentQuestion.find('input').text();
+  	} else {
+      payload[currentQuestionId]= $currentQuestion.find('.choice:not(".faded")').attr('data-value');
+    }
 
   	if($(this).hasClass('finish-btn')) {
   		 $.ajax({
-  		 	url: 'http://hidden-dawn-1745.herokuapp.com/recommendations/filter.json',
+  		 	url: 'http://localhost:3000/recommendations/filter.json',
   		 	data: payload
   		 }).done(function(result){
   		 	$('.container').empty();
