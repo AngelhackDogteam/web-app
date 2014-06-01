@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 import requests
+import json
 
 ########## PAGES ##########
 
@@ -14,20 +15,37 @@ def landing(request):
 	url = 'http://hidden-dawn-1745.herokuapp.com/breeds/load.json?ip=%s' % (ip)
 	r = requests.get(url)
 	dogs = r.json()
-	return render(request, 'landing.html', {'dogs': dogs})
+	dog_list = []
+	for dog in dogs:
+		try:
+			dog_pic = dog['photos'][0]['medium']
+			dog_id = dog['id']
+			dog_name = dog['name']
+			dog_list.append([dog_id, dog_name, dog_pic])
+		except IndexError:
+			print 'Wooba'
+	#dog id, dog pic, dog name
+	return render(request, 'landing.html', {'dog_list': dog_list})
 
 def test_page(request):
-	#location='city, state abbreviation'
-	#size = 'S' #S, M, L, XL
+	location='11753' #zip code
+	size = 'S' #S, M, L, XL
 	breed = 'Affenpinscher' #String
-	#sex='M'
-	#age = 'Baby' #Baby, Young, Adult, Senior
-	#url = 'http://hidden-dawn-1745.herokuapp.com/breeds.json?location=%s&sex=%s' % (location, size, breed, sex, age)
-	#size - s
-	#r = requests.get(url)
+	sex='M' #M/F
+	age = '' #Baby, Young, Adult, Senior
+	url = 'http://hidden-dawn-1745.herokuapp.com/breeds.json?location=%s' % location
+	if size!='':
+		url = url+'&size=%s' % size
+	if breed!='':
+		url=url+'&breed=%s' % breed
+	if sex!='':
+		url=url+'&sex=%s' % sex
+	if age!='':
+		url=url+'&age=%s' % age
+	r = requests.get(url)
 
 	#dictionary elements
-	#r.json()
+	json_data = r.json()
 
 	#Stuff from specific dog
 
@@ -53,4 +71,4 @@ def test_page(request):
 		'popular': popular,
 		'size': size,
 		'agility': agility,
-		'ip': ip})
+		'json_data': json_data})
