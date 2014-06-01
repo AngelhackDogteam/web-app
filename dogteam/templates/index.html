@@ -35,6 +35,12 @@
 	<div class="details-header">
 		<img class="portrait" src="http://placekitten.com/300/300" alt="Barkzilla">
 		<h1>BARKZILLA</h1>
+		<ul>
+			<li><img class="badge" src="{% static 'dogteam/cats_no.png' %}" /></li>
+			<li><img class="badge" src="{% static 'dogteam/housetrained_yes.png' %}" /></li>
+			<li><img class="badge" src="{% static 'dogteam/shots_yes.png' %}" /></li>
+			<li><img class="badge" src="{% static 'dogteam/baby_no.png' %}" /></li>
+		</ul>
 	</div>
 	<div class="details-content">
 	<p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam, ullam ea harum facilis tempore rem assumenda eum architecto nam. Debitis, porro est magni accusantium alias explicabo ipsa doloribus aspernatur doloremque!</p>
@@ -174,7 +180,9 @@ $( function() {
 		 //get specific dog 
 		 // $('#details-pane h1').html(dogData.)
 		 var dogId = $(this).attr('data-dog-id');
+		 $('#details-pane').css('opacity', .4);
 		 $.ajax('http://hidden-dawn-1745.herokuapp.com/dogs.json?pet_id=' + dogId).done(function(dog){
+		 	$('#details-pane').css('opacity', 1);
 		 	populateDetails(dog);
 		 	$.ajax('http://hidden-dawn-1745.herokuapp.com/shelters.json?shelter_id=' + dog.shelter_id).done(function(shelter){
 
@@ -224,7 +232,7 @@ $( function() {
 
   $('.walkthrough-btn').hover(function(){
   	$(this).find('img').attr('src', '/static/dogteam/sparkles.png');
-  	$(this).css('background', 'black')
+  	$(this).css({'background':'black', 'border': 'none'});
   },
   	function(){
   		$(this).find('img').attr('src', '/static/dogteam/sparklesblack.png');
@@ -268,18 +276,20 @@ $( function() {
 
   	}
   	else if ($currentQuestion.hasClass('zipcode')){
-      console.log($currentQuestion.find('input').text() );
-  		payload[currentQuestionId]= $currentQuestion.find('input').text();
+      console.log($currentQuestion.find('input').val() );
+  		payload[currentQuestionId]= $currentQuestion.find('input').val();
   	} else {
       payload[currentQuestionId]= $currentQuestion.find('.choice:not(".faded")').attr('data-value');
     }
 
   	if($(this).hasClass('finish-btn')) {
   		 $.ajax({
-  		 	url: 'http://localhost:3000/recommendations/filter.json',
+  		 	url: 'http://hidden-dawn-1745.herokuapp.com/recommendations/filter.json',
   		 	data: payload
   		 }).done(function(result){
+  		 	$('.recommender').hide();
   		 	$('.container').empty();
+
   		 	dogsData = result.data;
   		  $.each(dogsData, function(i, dog) {
   		  	if(dog.photos[0]) {
