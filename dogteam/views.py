@@ -4,15 +4,20 @@ import requests
 ########## PAGES ##########
 
 def landing(request):
-	return render(request, 'landing.html')
-
-def test_page(request):
 	x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
 	if x_forwarded_for:
 		ip = x_forwarded_for.split(',')[0]
 	else:
 		ip = request.META.get('REMOTE_ADDR')
-	#location='11753'
+	ip = '38.108.97.34'
+	ip = ip.replace('.','-')
+	url = 'http://hidden-dawn-1745.herokuapp.com/breeds/load.json?ip=%s' % (ip)
+	r = requests.get(url)
+	dogs = r.json()
+	return render(request, 'landing.html', {'dogs': dogs})
+
+def test_page(request):
+	#location='city, state abbreviation'
 	#size = 'S' #S, M, L, XL
 	breed = 'Affenpinscher' #String
 	#sex='M'
